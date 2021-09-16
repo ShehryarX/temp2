@@ -1,6 +1,6 @@
 # Project Title: Fire Guard
-## Project Category: Develop a new product
-### Names: Advitya Chhabra (20768416), Shehryar Assad (20769393), Shahbaz Momi (20757960), Tyler Pinto (20762174), Hussain Abdi (20718058), Rafit Jamil (20785154)
+**Project Category:** Develop a new product <br/>
+**Project Team Members:** Advitya Chhabra (20768416), Shehryar Assad (20769393), Shahbaz Momi (20757960), Tyler Pinto (20762174), Hussain Abdi (20718058), Rafit Jamil (20785154)
  
 We were personally affected by the wildfires in BC this summer and sought to create a product that could diagnose fires at an early stage and put them out before they worsen. To do this, we created FireGuard, a hardware-software solution that detects fires and alerts local communities, government authorities and firefighters to help fight forest fires early. FireGuard creates a safer environment for their citizens by minimizing the hefty financial and environmental damage associated with forest fires.
 A major obstacle that comes with FireGuard is reliability and maintenance. FireGuard would require thousands of sensors spread across acres of land communicating with each other every few seconds. In the case of a technical issue such as a sensor failing, an on-site technician would have to travel to the affected area as soon as possible to fix the issue. 
