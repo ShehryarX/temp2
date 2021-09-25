@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import './App.css';
 
+const database = {};
+database.ref = (str) => {
+  return {
+    child: 'sdf',
+  }
+};
+
 function App() {
   const [urmom, seturmom] = React.useState();
   useEffect  = () => {
@@ -279,137 +286,134 @@ function App() {
   }
 
   return (
-<div id="app">
-    <div>
-      <b-jumbotron header="Guardian" style="width: 50%; margin: 0 auto; opacity: 0.9;" lead="Novel Approach to Firefighter Safety">
-        <img style="opacity: 1" src="https://image.flaticon.com/icons/svg/206/206877.svg" height="200px"></img>
-        <!-- <p>For more information visit website</p>
-        <b-button variant="primary" href="#">More Info</b-button> -->
-      </b-jumbotron>
-    </div>
-    <div class="mt-5">
+    <div id="app">
       <div>
-        <b-card-group deck>
-          <b-card  v-bind:class="temperatureClassObject" header="Temperature" header-class="customFont" class="text-center">
+         <b-jumbotron header="Guardian" style="width: 50%; margin: 0 auto; opacity: 0.9;" lead="Novel Approach to Firefighter Safety">
+           <img style="opacity: 1" src="https://image.flaticon.com/icons/svg/206/206877.svg" height="200px"></img>
+           <b-button variant="primary" href="#">More Info</b-button>
+         </b-jumbotron>
+       </div>
+       <div class="mt-5">
+      <div>
+        <div>
+          <div  v-bind:class="temperatureClassObject" header="Temperature" header-class="customFont" class="text-center">
     
-                    <ToggleButton 
-                      @change="toggleTemperature"
-                      :width="toggleButtonWidth"
-                      :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
-                    <div v-if="showTemperature">
-                      <!-- <div @click=toggleTemperature>
-                        Click to see chart
-                      </div>   -->
-                      <div class="card-body">
-                          <h1 id="temperature" style="font-size: 75px;" class="card-title"> {{temperatureData[temperatureData.length-1].y}}°C</h1>
-                          <p class="card-text">Temperature displayed in Celsius degree.</p>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <!-- <div @click=toggleTemperature>
-                        Click to see current data
-                      </div>   -->
-                        <apexchart ref="temperatureChart" type=line :options="temperatureOptions" :series="tempSeries" />
-                    </div>
-              <b-alert class="bigText" show v-model="showTemperatureAlert" variant="danger">
-                WARNING: Critical Temperature
-              </b-alert>
-          </b-card>
+              <button 
+                // @change="toggleTemperature"
+                // :width="toggleButtonWidth"
+                // :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
+                />
+              <div v-if="showTemperature">
+                <div class="card-body">
+                    <h1 id="temperature" style="font-size: 75px;" class="card-title"> {temperatureData[temperatureData.length-1].y}°C</h1>
+                    <p class="card-text">Temperature displayed in Celsius degree.</p>
+                </div>
+              </div>
+              <div v-else>
+                  <apexchart ref="temperatureChart" 
+                  /**type=line :options="temperatureOptions" :series="tempSeries"  */
+                  />
+              </div>
+        <b-alert class="bigText" show v-model="showTemperatureAlert" variant="danger">
+          WARNING: Critical Temperature
+        </b-alert>
+        </div>
+     </div>
+  )
 
-          <b-card v-bind:class="humidityClassObject" header="Humidity" header-class="customFont" class="text-center">
-            <ToggleButton 
-                      @change="toggleHumidity"
-                      :width="toggleButtonWidth"
-                      :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
-                    <div v-if="showHumidity">
-                      <div class="card-body">
-                          <h1 id="humidity" style="font-size: 75px;" class="card-title"><span> {{humidityData[humidityData.length - 1].y}}%</span></h1>
-                          <p class="card-text">Relative humidity displayed in percentage.</p>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <apexchart ref="humidityChart" type="line" :options="humidityOptions" :series="series"></apexchart>
-                    </div>
+//           <div v-bind:class="humidityClassObject" header="Humidity" header-class="customFont" class="text-center">
+//             <ToggleButton 
+//                       @change="toggleHumidity"
+//                       :width="toggleButtonWidth"
+//                       :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
+//                     <div v-if="showHumidity">
+//                       <div class="card-body">
+//                           <h1 id="humidity" style="font-size: 75px;" class="card-title"><span> {{humidityData[humidityData.length - 1].y}}%</span></h1>
+//                           <p class="card-text">Relative humidity displayed in percentage.</p>
+//                       </div>
+//                     </div>
+//                     <div v-else>
+//                       <apexchart ref="humidityChart" type="line" :options="humidityOptions" :series="series"></apexchart>
+//                     </div>
               
-          </b-card>
-          <b-card v-bind:class="carbonDioxideClassObject" header="Carbon Dioxide" header-class="customFont" class="text-center">
-              <ToggleButton 
-                      @change="toggleCarbonDioxide"
-                      :width="toggleButtonWidth"
-                      :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
-                    <div v-if="showCarbonDioxide">
-                      <div class="card-body">
-                          <h1 id="carbonDioxide" style="font-size: 75px;" class="card-title"> {{carbonDioxideData[carbonDioxideData.length-1].y}}<span>ppb</span></h1>
-                          <p class="card-text">Number articles of carbon of dioxide in the air in parts per billion.</p>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <apexchart ref="carbonDioxideChart" type=line :options="carbonDioxideOptions" :series="carbonDioxideSeries" />
-                    </div>
-              <b-alert class="bigText" show v-model="showCarbonDioxideAlert" variant="danger">
-                WARNING: Critical Carbon Dioxide Levels
-              </b-alert>
-          </b-card>
-        </b-card-group>
+//           </div>
+//           <div v-bind:class="carbonDioxideClassObject" header="Carbon Dioxide" header-class="customFont" class="text-center">
+//               <ToggleButton 
+//                       @change="toggleCarbonDioxide"
+//                       :width="toggleButtonWidth"
+//                       :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
+//                     <div v-if="showCarbonDioxide">
+//                       <div class="card-body">
+//                           <h1 id="carbonDioxide" style="font-size: 75px;" class="card-title"> {{carbonDioxideData[carbonDioxideData.length-1].y}}<span>ppb</span></h1>
+//                           <p class="card-text">Number articles of carbon of dioxide in the air in parts per billion.</p>
+//                       </div>
+//                     </div>
+//                     <div v-else>
+//                       <apexchart ref="carbonDioxideChart" type=line :options="carbonDioxideOptions" :series="carbonDioxideSeries" />
+//                     </div>
+//               <b-alert class="bigText" show v-model="showCarbonDioxideAlert" variant="danger">
+//                 WARNING: Critical Carbon Dioxide Levels
+//               </b-alert>
+//           </div>
+//         </div
 
-      </div>
-    </div>
-    <div class="mt-5">
-      <b-card-group deck>
-        <b-card v-bind:class="totalVolatileOrganicCompoundClassObject" header="Total Volatile Organic Compound" header-class="customFont" class="text-center">
-            <ToggleButton 
-                      @change="toggleTotalVolatileOrganicCompound"
-                      :width="toggleButtonWidth"
-                      :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
-                    <div v-if="showTotalVolatileOrganicCompound">
-                      <div class="card-body">
-                          <h1 id="totalVolatileOrganicCompound" style="font-size: 75px;" class="card-title"> {{totalVolatileOrganicCompoundData[totalVolatileOrganicCompoundData.length-1].y}}<span>ppb</span></h1>
-                          <p class="card-text">Total volatile organic compound in the air in parts per billion</p>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <apexchart ref="totalVolatileOrganicChart" type=line :options="totalVolatileOrganicCompoundOptions" :series="totalVolatileOrganicCompoundSeries" />
-                    </div>
-                    <b-alert class="bigText" show v-model="showTotalVolatileOrganicCompoundAlert" variant="danger">
-                WARNING: High Total Volatile Organic Compound Levels
-                </b-alert>
-        </b-card>
+//       </div>
+//     </div>
+//     <div class="mt-5">
+//       <div>
+//         <div v-bind:class="totalVolatileOrganicCompoundClassObject" header="Total Volatile Organic Compound" header-class="customFont" class="text-center">
+//             <ToggleButton 
+//                       @change="toggleTotalVolatileOrganicCompound"
+//                       :width="toggleButtonWidth"
+//                       :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
+//                     <div v-if="showTotalVolatileOrganicCompound">
+//                       <div class="card-body">
+//                           <h1 id="totalVolatileOrganicCompound" style="font-size: 75px;" class="card-title"> {{totalVolatileOrganicCompoundData[totalVolatileOrganicCompoundData.length-1].y}}<span>ppb</span></h1>
+//                           <p class="card-text">Total volatile organic compound in the air in parts per billion</p>
+//                       </div>
+//                     </div>
+//                     <div v-else>
+//                       <apexchart ref="totalVolatileOrganicChart" type=line :options="totalVolatileOrganicCompoundOptions" :series="totalVolatileOrganicCompoundSeries" />
+//                     </div>
+//                     <b-alert class="bigText" show v-model="showTotalVolatileOrganicCompoundAlert" variant="danger">
+//                 WARNING: High Total Volatile Organic Compound Levels
+//                 </b-alert>
+//         </div>
 
-        <b-card bg-variant="light" header="Altitude" header-class="customFont" class="text-center">
-            <ToggleButton 
-                      @change="toggleAltitude"
-                      :width="toggleButtonWidth"
-                      :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
-                    <div v-if="showAltitude">
-                      <div class="card-body">
-                          <h1 id="altitude" style="font-size: 75px;" class="card-title"> {{altitudeData[altitudeData.length-1].y}}<span>metres</span></h1>
-                          <p class="card-text">Altitude displayed in metres</p>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <apexchart ref="altitudeChart" type=line :options="options" :series="altitudeSeries" />
-                    </div>
-        </b-card>
+//         <div bg-variant="light" header="Altitude" header-class="customFont" class="text-center">
+//             <ToggleButton 
+//                       @change="toggleAltitude"
+//                       :width="toggleButtonWidth"
+//                       :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
+//                     <div v-if="showAltitude">
+//                       <div class="card-body">
+//                           <h1 id="altitude" style="font-size: 75px;" class="card-title"> {{altitudeData[altitudeData.length-1].y}}<span>metres</span></h1>
+//                           <p class="card-text">Altitude displayed in metres</p>
+//                       </div>
+//                     </div>
+//                     <div v-else>
+//                       <apexchart ref="altitudeChart" type=line :options="options" :series="altitudeSeries" />
+//                     </div>
+//         </div>
 
-        <b-card bg-variant="light" header="Atomspheric Pressure" header-class="customFont" class="text-center">
-          <ToggleButton 
-                      @change="toggleAtmosphericPressure"
-                      :width="toggleButtonWidth"
-                      :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
-                    <div v-if="showAtmosphericPressure">
-                      <div class="card-body">
-                          <h1 id="atmosphericPressure" style="font-size: 75px;" class="card-title"> {{atomospherePressureData[atomospherePressureData.length-1].y}}<span>hPa</span></h1>
-                          <p class="card-text">Atmospheric pressure displayed in metres</p>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <apexchart ref="atmosphericPressureChart" type=line :options="options" :series="atmosphericPressureSeries" />
-                    </div>
-        </b-card>
-      </b-card-group>
-    </div>         
-  </div>
-  );
+//         <div bg-variant="light" header="Atomspheric Pressure" header-class="customFont" class="text-center">
+//           <ToggleButton 
+//                       @change="toggleAtmosphericPressure"
+//                       :width="toggleButtonWidth"
+//                       :labels="{checked: 'Chart', unchecked: 'Current Data'}"/>
+//                     <div v-if="showAtmosphericPressure">
+//                       <div class="card-body">
+//                           <h1 id="atmosphericPressure" style="font-size: 75px;" class="card-title"> {{atomospherePressureData[atomospherePressureData.length-1].y}}<span>hPa</span></h1>
+//                           <p class="card-text">Atmospheric pressure displayed in metres</p>
+//                       </div>
+//                     </div>
+//                     <div v-else>
+//                       <apexchart ref="atmosphericPressureChart" type=line :options="options" :series="atmosphericPressureSeries" />
+//                     </div>
+//         </div>
+//       </div/div>         
+//   </div>
+//   );
 }
 
 export default App;
