@@ -1,15 +1,25 @@
-import firebase from 'firebase'
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-let firebaseConfig = {
-  apiKey: "AIzaSyAr4XfjXnQ0MDKF8ItJF5g0_sfOJym5QdE",
-  authDomain: "guardian-8888.firebaseapp.com",
-  databaseURL: "https://guardian-8888.firebaseio.com",
-  projectId: "guardian-8888",
-  storageBucket: "",
-  messagingSenderId: "479861968929",
-  appId: "1:479861968929:web:e7f9b6edbc21d8f1941360"
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCAkvuDEEjEouk_ff46PcP3rN1mT2wh56Q",
+  authDomain: "fire-babies.firebaseapp.com",
+  projectId: "fire-babies",
+  storageBucket: "fire-babies.appspot.com",
+  messagingSenderId: "867243399468",
+  appId: "1:867243399468:web:90019e565e73894f35b489",
+  measurementId: "G-G7EW8HGPWL"
 };
 
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+const firebase = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+// firebase.initializeApp(firebaseConfig);
 
 export var database = firebase.database();
