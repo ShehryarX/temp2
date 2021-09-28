@@ -39,41 +39,6 @@ export default function Clusters() {
     setLeaves([]);
   };
 
-  // const handleContextMenu = (e) => { 
-  //   console.log("starting")
-  //   showModal();
-  //   e.preventDefault();
-  //     console.log("hussf")
-  //     console.log(e);
-  //   if(e.features) { 
-  //     console.log(e.features);
-  //   }
-  //   console.log(e.features)
-  //   setFeatures(e.features);
-  //   // setXPos(`${e.pageX}px`);
-  //   // setYPos(`${e.pageY}px`);
-  //   showModal();
-  // }
-
-  // const handleContextMenu = useCallback(
-  //   (e) => {
-  //     console.log("starting")
-  //     showModal();
-  //     e.preventDefault();
-  //       console.log("hussf")
-  //       console.log(e);
-  //     if(e.features) { 
-  //       console.log(e.features);
-  //     }
-  //     console.log(e.features)
-      
-  //     // setXPos(`${e.pageX}px`);
-  //     // setYPos(`${e.pageY}px`);
-  //     showModal();
-  //   },
-  //   []
-  // );
-
   const handleClick = useCallback((event) => {
 
     if(!isModalVisible && event.features && event.features[0].properties) {
@@ -96,15 +61,6 @@ export default function Clusters() {
                     transitionDuration: 500
                 });
             });
-        } else if(feature.layer.id == "unclustered-point"){ 
-
-          setViewport({
-              ...viewport,
-              longitude: feature.geometry.coordinates[0],
-              latitude: feature.geometry.coordinates[1],
-              transitionDuration: 500
-          });
-
         } else { 
 
             setViewport({
@@ -120,10 +76,8 @@ export default function Clusters() {
 
   useEffect(() => {
     document.addEventListener("click", handleClick);
-    // document.addEventListener("contextmenu", handleContextMenu);
     return () => {
       document.addEventListener("click", handleClick);
-      // document.removeEventListener("contextmenu", handleContextMenu);
     };
   });
 
@@ -187,7 +141,6 @@ export default function Clusters() {
           )}
 
         />
-     
       </Modal>
       <ControlPanel />
     </>
