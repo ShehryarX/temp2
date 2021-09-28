@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, Layout } from 'antd';
 import Map from './Map';
-import Map2 from './Map2';
+import Map2 from './Clusters/Map2';
 import MapGL, {Source, Layer} from 'react-map-gl';
 
 const { Header, Footer, Sider, Content } = Layout;
