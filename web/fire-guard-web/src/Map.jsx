@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useState, useEffect, useMemo} from 'react';
 import {render} from 'react-dom';
 import MapGL, {Source, Layer} from 'react-map-gl';
-import ControlPanel from './control-panel';
+import ControlPanel from './Controls/control-panel';
 import {heatmapLayer} from './map-style';
 import 'mapbox-gl/dist/mapbox-gl.css';
 const MAPBOX_TOKEN = 'sk.eyJ1IjoidHBpbnRvNyIsImEiOiJja3UyMXNrb3UxdHJhMnV0aHBpdzE3M3k2In0.B-D9tE8Oxfl-DPoR95fmAQ'; // Set your mapbox token here

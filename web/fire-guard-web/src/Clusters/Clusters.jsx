@@ -12,7 +12,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw'; // Set your mapbox token here
 
-export default function Map2() {
+export default function Clusters() {
   const [viewport, setViewport] = useState({
     latitude: 40.67,
     longitude: -103.59,

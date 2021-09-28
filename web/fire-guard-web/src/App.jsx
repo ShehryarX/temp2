@@ -1,14 +1,36 @@
 
 
 import React from 'react';
-import { Card, Layout } from 'antd';
-import Map from './Map';
-import Map2 from './Clusters/Map2';
+import { Card, Layout, Row, Col, Button } from 'antd';
+import Clusters from './Clusters/Clusters';
+import Controls from './Controls/Controls'; 
 import Heatmap from './Heatmap/Heatmap';
 import MapGL, {Source, Layer} from 'react-map-gl';
-
+import controlImage from './assets/Houston.jpg'
 const { Header, Footer, Sider, Content } = Layout;
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw';
+
+const mapViewButtonStyle = {
+  top: 0,
+  left: 735,
+  height: "100%",
+  width: "100%",
+  backgroundSize: "cover",
+  padding: '10px'
+};
+
+const mapViewRowStyle = {
+  top: 0,
+  left: 900,
+  backgroundSize: "cover",
+  padding: '10px'
+};
+
+const mapViewImageStyle = {
+  objectFit: "contain",
+  width: "100%",
+  height: "100%"
+}
 
 export class App extends React.Component {
   state = { 
@@ -16,12 +38,12 @@ export class App extends React.Component {
       latitude: 37.7577,
       longitude: -122.4376,
       zoom: 8
-    }
+    },
+    mapType: 0, 
 
   }
   render() {
-    const {viewport} = this.state;
-    console.log("testsetsetet")
+
     return (
       <div>
         <Layout>
@@ -30,8 +52,7 @@ export class App extends React.Component {
               Fire Guardian
             </div>
           </Header>
-          {/* <Content> */}
-{/*             
+          <Content> 
             add ur stuff here
             <div>
               <Card title="Card title" bordered={false} style={{ width: 300 }}>
@@ -39,7 +60,7 @@ export class App extends React.Component {
                 <p>Card content</p>
                 <p>Card content</p>
               </Card>
-            </div> */}
+            </div>
             {/* <div className="tyler"> 
               <Map style={ {width: '100%', height: '100%', position: 'relative' }}/>
             </div>  */}
@@ -54,8 +75,18 @@ export class App extends React.Component {
               />
             </div> */}
             {/* <Map2 width="500px" height="500px"/> */}
-            <Heatmap/>
-          {/* </Content> */}
+            <div className="mapWrapper">
+              {this.state.mapType === 0 && <Controls />}
+              {this.state.mapType === 1 && <Clusters/>}
+              {this.state.mapType === 2 && <Heatmap />}
+
+              <Row style={mapViewRowStyle}>
+                  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+                  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+                  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+                </Row>
+            </div>
+          </Content>
         </Layout>
       </div>
     )
