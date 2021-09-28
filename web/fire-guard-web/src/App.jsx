@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, Layout } from 'antd';
 import Map from './Map';
 import Map2 from './Clusters/Map2';
+import Heatmap from './Heatmap/Heatmap';
 import MapGL, {Source, Layer} from 'react-map-gl';
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -52,8 +53,8 @@ export class App extends React.Component {
                   visible={true}
               />
             </div> */}
-            <Map2 width="500px" height="500px"/>
-
+            {/* <Map2 width="500px" height="500px"/> */}
+            <Heatmap/>
           {/* </Content> */}
         </Layout>
       </div>
