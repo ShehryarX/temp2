@@ -1,6 +1,25 @@
 import React, { useState } from 'react';
 import { Button, Card, Modal } from 'antd';
 import { Line } from "react-chartjs-2";
+import { ref, get, child, onValue } from 'firebase/database'
+import { db } from "../temp.js";
+
+// get(db, `current/GRD_0001/`).then((snapshot) => {
+//   if (snapshot.exists()) {
+//     console.log(snapshot.val());
+//   } else {
+//     console.log("No data available");
+//   }
+// }).catch((error) => {
+//   console.error(error);
+// });
+
+const aa = ref(db, 'current/GRD_0001/');
+onValue(aa, (snapshot) => {
+  const data = snapshot.val();
+  console.log(data);
+});
+
 
 const TemperatureData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],

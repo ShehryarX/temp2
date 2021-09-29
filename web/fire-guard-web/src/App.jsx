@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Card, Layout, Row, Col, Button } from 'antd';
 import Clusters from './Clusters/Clusters';
@@ -11,6 +9,8 @@ import clusterImage from './assets/ClusterPreview.jpg';
 import heatmapImage from './assets/HeatmapPreview.jpg';
 
 import { DashboardModal } from './dashboard/DashboardModal';
+
+
 const { Header, Footer, Sider, Content } = Layout;
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw';
 
