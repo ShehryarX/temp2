@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useState, useEffect, useMemo} from 'react';
 import {render} from 'react-dom';
 import MapGL, {Source, Layer} from 'react-map-gl';
-import ControlPanel from './control-panel';
 import {heatmapLayer} from './map-style';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw'; // Set your mapbox token here
@@ -80,14 +79,6 @@ export default function Heatmap(props) {
         )}
         {buttons}
       </MapGL>
-      <ControlPanel
-        startTime={timeRange[0]}
-        endTime={timeRange[1]}
-        selectedTime={selectedTime}
-        allDays={allDays}
-        onChangeTime={selectTime}
-        onChangeAllDays={useAllDays}
-      />
     </>
   );
 }

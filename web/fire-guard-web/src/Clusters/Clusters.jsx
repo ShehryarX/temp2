@@ -5,8 +5,6 @@ import {render} from 'react-dom';
 import MapGL, {Source, Layer} from 'react-map-gl';
 import { Modal, List } from 'antd';
 
-
-import ControlPanel from './control-panel-2';
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from './layers';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css';
@@ -141,10 +139,8 @@ export default function Clusters(props) {
           renderItem={item => (
             <List.Item>{item.properties.id}</List.Item>
           )}
-
         />
       </Modal>
-      <ControlPanel />
     </>
   );
 }

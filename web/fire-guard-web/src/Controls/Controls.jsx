@@ -12,7 +12,6 @@ import MapGL, {
   GeolocateControl
 } from 'react-map-gl';
 
-import ControlPanel from './control-panel';
 import Pins from './pins';
 import CityInfo from './city-info';
 import CITIES from './.data/cities.json';
@@ -109,8 +108,6 @@ export default function Controls(props) {
               {buttons}
               
             </MapGL>
-
-            <ControlPanel />
         </Content>
       </Layout>
     </div>
