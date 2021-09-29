@@ -7,6 +7,7 @@ import Controls from './Controls/Controls';
 import Heatmap from './Heatmap/Heatmap';
 import MapGL, {Source, Layer} from 'react-map-gl';
 import controlImage from './assets/Houston.jpg'
+import { DashboardModal } from './dashboard/DashboardModal';
 const { Header, Footer, Sider, Content } = Layout;
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw';
 
@@ -53,14 +54,6 @@ export class App extends React.Component {
             </div>
           </Header>
           <Content> 
-            add ur stuff here
-            <div>
-              <Card title="Card title" bordered={false} style={{ width: 300 }}>
-                <p>Card content</p>
-                <p>Card content</p>
-                <p>Card content</p>
-              </Card>
-            </div>
             {/* <div className="tyler"> 
               <Map style={ {width: '100%', height: '100%', position: 'relative' }}/>
             </div>  */}
@@ -86,6 +79,7 @@ export class App extends React.Component {
                   <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
                 </Row>
             </div>
+            <DashboardModal />
           </Content>
         </Layout>
       </div>
