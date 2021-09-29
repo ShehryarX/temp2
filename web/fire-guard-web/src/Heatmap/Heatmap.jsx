@@ -23,7 +23,7 @@ function filterFeaturesByDay(featureCollection, time) {
   return {type: 'FeatureCollection', features};
 }
 
-export default function Heatmap() {
+export default function Heatmap(props) {
   const [viewport, setViewport] = useState({
     latitude: 40,
     longitude: -100,
@@ -31,6 +31,7 @@ export default function Heatmap() {
     bearing: 0,
     pitch: 0
   });
+  const buttons = props.buttons;
   const [allDays, useAllDays] = useState(true);
   const [timeRange, setTimeRange] = useState([0, 0]);
   const [selectedTime, selectTime] = useState(0);
@@ -77,6 +78,7 @@ export default function Heatmap() {
             <Layer {...heatmapLayer} />
           </Source>
         )}
+        {buttons}
       </MapGL>
       <ControlPanel
         startTime={timeRange[0]}

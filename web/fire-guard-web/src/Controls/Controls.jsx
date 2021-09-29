@@ -54,7 +54,7 @@ const scaleControlStyle = {
 
 
 
-export default function App(props) {
+export default function Controls(props) {
   const [viewport, setViewport] = useState({
     latitude: 40,
     longitude: -100,
@@ -73,6 +73,7 @@ export default function App(props) {
       city["color"] = "#ebae2c";
     }
   });
+  const buttons = props.buttons; 
   return (
     <div>
       <Layout>
@@ -105,7 +106,7 @@ export default function App(props) {
               <FullscreenControl style={fullscreenControlStyle} />
               <NavigationControl style={navStyle} />
               <ScaleControl style={scaleControlStyle} />
-          
+              {buttons}
               
             </MapGL>
 

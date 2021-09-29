@@ -12,7 +12,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw'; // Set your mapbox token here
 
-export default function Clusters() {
+export default function Clusters(props) {
   const [viewport, setViewport] = useState({
     latitude: 40.67,
     longitude: -103.59,
@@ -28,7 +28,7 @@ export default function Clusters() {
   const showModal = () => {
     setIsModalVisible(true);
   };
-
+  const buttons = props.buttons;
   const handleOk = () => {
     setIsModalVisible(false);
     setLeaves([]);
@@ -132,6 +132,8 @@ export default function Clusters() {
           <Layer {...clusterCountLayer} />
           <Layer {...unclusteredPointLayer} />
         </Source>
+        {buttons}
+
       </MapGL>
       <Modal title="Cluster's beacons" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <List

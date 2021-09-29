@@ -33,6 +33,8 @@ const mapViewImageStyle = {
   height: "100%"
 }
 
+
+
 export class App extends React.Component {
   state = { 
     viewport: { 
@@ -42,9 +44,15 @@ export class App extends React.Component {
     },
     mapType: 0, 
 
-  }
-  render() {
+  };
 
+  render() {
+    const mapButtons = <> <Row style={mapViewRowStyle}>
+        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+      </Row> </>;
+    // define the deliverables 
     return (
       <div>
         <Layout>
@@ -69,15 +77,15 @@ export class App extends React.Component {
             </div> */}
             {/* <Map2 width="500px" height="500px"/> */}
             <div className="mapWrapper">
-              {this.state.mapType === 0 && <Controls />}
-              {this.state.mapType === 1 && <Clusters/>}
-              {this.state.mapType === 2 && <Heatmap />}
+              {this.state.mapType === 0 && <Controls buttons={mapButtons}/>}
+              {this.state.mapType === 1 && <Clusters buttons={mapButtons}/>}
+              {this.state.mapType === 2 && <Heatmap buttons={mapButtons}/>}
 
-              <Row style={mapViewRowStyle}>
-                  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-                  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-                  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-                </Row>
+              {/* <Row style={mapViewRowStyle}>
+                <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+                <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+                <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+              </Row> */}
             </div>
             <DashboardModal />
           </Content>
