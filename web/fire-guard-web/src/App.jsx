@@ -4,7 +4,10 @@ import Clusters from './Clusters/Clusters';
 import Controls from './Controls/Controls'; 
 import Heatmap from './Heatmap/Heatmap';
 import MapGL, {Source, Layer} from 'react-map-gl';
-import controlImage from './assets/Houston.jpg'
+import controlImage from './assets/ControlsPreview.jpg';
+import clusterImage from './assets/ClusterPreview.jpg';
+import heatmapImage from './assets/HeatmapPreview.jpg';
+
 import { DashboardModal } from './dashboard/DashboardModal';
 
 
@@ -49,8 +52,8 @@ export class App extends React.Component {
   render() {
     const mapButtons = <> <Row style={mapViewRowStyle}>
         <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={clusterImage} style ={mapViewImageStyle}></img> </Button></Col>
+        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={heatmapImage} style ={mapViewImageStyle}></img> </Button></Col>
       </Row> </>;
     // define the deliverables 
     return (
