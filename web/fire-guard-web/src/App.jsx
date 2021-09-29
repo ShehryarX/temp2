@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Card, Layout, Row, Col, Button } from 'antd';
 import Clusters from './Clusters/Clusters';
@@ -8,6 +6,8 @@ import Heatmap from './Heatmap/Heatmap';
 import MapGL, {Source, Layer} from 'react-map-gl';
 import controlImage from './assets/Houston.jpg'
 import { DashboardModal } from './dashboard/DashboardModal';
+
+
 const { Header, Footer, Sider, Content } = Layout;
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw';
 
