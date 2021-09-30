@@ -26,7 +26,7 @@ export default function Clusters(props) {
   const showModal = () => {
     setIsModalVisible(true);
   };
-  const { buttons, setVisible } = props;
+  const { buttons, setVisible, setBeaconName } = props;
   const handleOk = () => {
     setIsModalVisible(false);
     setLeaves([]);
@@ -104,14 +104,16 @@ export default function Clusters(props) {
         // React.useImperativeHandle
         // handleOnClick();
         // setVisible(true);
-        setDashboardVisible();
+        setDashboardVisible(feature.properties.id);
       }
     }
   }
 
-  const setDashboardVisible = () => {
+  const setDashboardVisible = (id) => {
+    console.log("test")
     setIsModalVisible(false);
     setVisible(true);
+    setBeaconName(id);
 
   }
 
@@ -148,14 +150,13 @@ export default function Clusters(props) {
           <Layer {...unclusteredPointLayer} />
         </Source>
         {buttons}
-
       </MapGL>
       <Modal title="Cluster's beacons" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <List
           dataSource={leaves}
           renderItem={item => (
             <List.Item style={{padding: "20px 0px"}}>
-              {item.properties.id}<Button style={{float: "right", margin: "auto", padding: "auto"}} onClick={setDashboardVisible}> View Dashboard </Button>
+              {item.properties.id}<Button style={{float: "right", margin: "auto", padding: "auto"}} onClick={() => setDashboardVisible(item.properties.id)}> View Dashboard </Button>
             </List.Item>
           )}
         />

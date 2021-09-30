@@ -50,7 +50,6 @@ export const DashboardModal = (props) => {
   let epochData = [];
   useMemo(() => {
     setInterval(() => {
-      console.log("NOW!");
       get(child(aa, 'current/GRD_0001/')).then((snapshot) => {
         if (snapshot.exists()) {
           temp.push(snapshot.val()['temp']);
@@ -102,7 +101,7 @@ export const DashboardModal = (props) => {
         Beacon Information
       </Button>
       <Modal
-        title={`Beacon BEACON_NAME`}
+        title={`Beacon ${beaconName}`}
         centered
         visible={visible}
         onOk={() => setVisible(false)}
