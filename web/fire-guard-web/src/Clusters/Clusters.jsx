@@ -105,12 +105,16 @@ export default function Clusters(props) {
     }
   }
 
+  const returnDivStyle = {
+    height: "100%",
+  }
+
   return (
-    <>
+    <div style={returnDivStyle}>
       <MapGL
         {...viewport}
-        width="1000px"
-        height="500px"
+        height="100vh"
+        width="auto"
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={setViewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}
@@ -141,6 +145,6 @@ export default function Clusters(props) {
           )}
         />
       </Modal>
-    </>
+    </div>
   );
 }

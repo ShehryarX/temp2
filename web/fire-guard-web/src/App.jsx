@@ -15,25 +15,39 @@ const { Header, Footer, Sider, Content } = Layout;
 const MAPBOX_TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn0.NdzHwoMYvZ-fSTIA9xXXfw';
 
 const mapViewButtonStyle = {
-  top: 0,
-  left: 735,
-  height: "100%",
-  width: "100%",
-  backgroundSize: "cover",
-  padding: '10px'
+  position: "fixed",
+  bottom: 0,
+  height: "100px",
+  width: "100px",
+  minHeight: "75px",
+  minWidth: "75px",
+  marginBottom: "40px",
+  marginLeft : "10px",
+  padding: '0px',
 };
 
 const mapViewRowStyle = {
-  top: 0,
-  left: 900,
+  position: "relative",
+  bottom: 0,
   backgroundSize: "cover",
   padding: '10px'
 };
 
 const mapViewImageStyle = {
-  objectFit: "contain",
   width: "100%",
   height: "100%"
+}
+
+const contentStyle = {
+  height: "100vh",
+}
+
+const mapWrapperStyle = {
+  height: "100%"
+}
+
+const mapStyle = {
+  height: "100vh"
 }
 
 
@@ -64,7 +78,7 @@ export class App extends React.Component {
               Fire Guardian
             </div>
           </Header>
-          <Content> 
+          <Content style={contentStyle}> 
             {/* <div className="tyler"> 
               <Map style={ {width: '100%', height: '100%', position: 'relative' }}/>
             </div>  */}
@@ -79,10 +93,10 @@ export class App extends React.Component {
               />
             </div> */}
             {/* <Map2 width="500px" height="500px"/> */}
-            <div className="mapWrapper">
-              {this.state.mapType === 0 && <Controls buttons={mapButtons}/>}
-              {this.state.mapType === 1 && <Clusters buttons={mapButtons}/>}
-              {this.state.mapType === 2 && <Heatmap buttons={mapButtons}/>}
+            <div className="mapWrapper" style={mapWrapperStyle}>
+              {this.state.mapType === 0 && <Controls style={mapStyle} buttons={mapButtons}/>}
+              {this.state.mapType === 1 && <Clusters style={mapStyle} buttons={mapButtons}/>}
+              {this.state.mapType === 2 && <Heatmap style={mapStyle} buttons={mapButtons}/>}
 
               {/* <Row style={mapViewRowStyle}>
                 <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
@@ -90,7 +104,7 @@ export class App extends React.Component {
                 <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
               </Row> */}
             </div>
-            <DashboardModal />
+            {/*<DashboardModal /> */}
           </Content>
         </Layout>
       </div>
