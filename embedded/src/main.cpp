@@ -13,13 +13,20 @@
 
 #include <string>
 
+#if MESH_IS_ROOT
 void received_cb(const uint32_t &from, const String &msg) {
   Serial.printf("[MESH] Recv from node %d:\n%s\n", from, msg.c_str());
 }
+#else
+void received_cb(const uint32_t &from, const String &msg) {
+  Serial.printf("[MESH] Recv from node %d:\n%s\n", from, msg.c_str());
+}
+#endif
 
 PMS5003 pms;
 AM2120 ams;
 
+#if MESH_IS_ROOT
 void token_status_cb(TokenInfo token) {
   if(token.status == token_status_ready) {
     Serial.println("Token is ready!");
@@ -44,6 +51,7 @@ Firebase_ESP_Client fb;
 
 WiFiUDP ntp_udp;
 NTPClient ntp_client(ntp_udp, "pool.ntp.org", 0);
+#endif
 
 WiFiClient wifiClient;
 painlessMesh mesh;
@@ -59,53 +67,102 @@ void setup() {
 
   Serial.print("[GUARDIAN] Connecting to wifi...");
 
-  // WiFi.begin(WIFI_SSID, WIFI_PSK);
-  // while(WiFi.status() != WL_CONNECTED) {
-  //   Serial.print(".");
-  //   delay(300);
-  // }
+  mesh.setDebugMsgTypes(ERROR | STARTUP | CONNECTION | COMMUNICATION | GENERAL);
 
   mesh.init(MESH_PREFIX, MESH_PSK, MESH_PORT, WIFI_AP_STA, 11);
-  mesh.onReceive(received_cb);
+  // mesh.onReceive(&received_cb);
+#if MESH_IS_ROOT
   mesh.stationManual(WIFI_SSID, WIFI_PSK);
   mesh.setHostname(BOARD_ID);
   mesh.setRoot(true);
+#endif
   mesh.setContainsRoot(true);
-  
+
   pms.begin(PIN_PMS_TX);
   ams.begin(PIN_AM2120);
 }
 
 volatile bool hasSta = false;
+volatile uint32_t root_node_id = 0;
+volatile uint64_t last_update_time = 0;
+
+uint32_t getRootNodeId(const painlessmesh::protocol::NodeTree &node) {
+  if(node.root) return node.nodeId;
+  // Search children
+  for(const auto &sub : node.subs) {
+    auto id = getRootNodeId(sub);
+    if(id) return id;
+  }
+  return 0;
+}
 
 void loop() {
   mesh.update();
+#if MESH_IS_ROOT
   if(hasSta) ntp_client.update();
-
+#endif
   if(myIp != getLocalIp()) {
     myIp = getLocalIp();
-    // One time setup on IP change
-    ntp_client.begin();
-
     Serial.println();
     Serial.println("[GUARDIAN] Connected with IP: ");
     Serial.println(myIp);
 
+#if MESH_IS_ROOT
+    // One time setup on IP change
+    ntp_client.begin();
+
     Serial.println("[GUARDIAN] Staring Firebase...");
     Firebase.begin(&fb_cfg, &fb_auth);
-    // Firebase.reconnectWiFi(true);
     Firebase.RTDB.setMaxRetry(&fbdo, 3);
     Firebase.RTDB.setMaxErrorQueue(&fbdo, 30);
     Serial.println("[GUARDIAN] Started Firebase!");
+#else
+    auto layout = mesh.asNodeTree();
+    root_node_id = getRootNodeId(layout);
+
+    Serial.printf("[MESH] Found root 0x%x\n", root_node_id);
+#endif
+
     hasSta = true;
   }
 
+#if MESH_IS_ROOT
   if(pms.loop() && ams.has_frame() && hasSta) {
     am2120_data amd;
     if(!ams.get_frame(amd)) return;
     pms5003data pmd = pms.get_frame();
-    // if(!Firebase.ready()) return;
+#else
+  if(hasSta && millis() - last_update_time >= 4000) {
+    last_update_time = millis();
 
+    am2120_data amd = {
+      .humidity = 500,
+      .temperature = 220,
+      .checksum = 0
+    };
+    pms5003data pmd = {
+      .framelen = 0,
+      .pm10_standard = 1, .pm25_standard = 3, .pm100_standard = 2,
+      .pm10_env = 1, .pm25_env = 3, .pm100_env = 2,
+      .particles_03um = 10, .particles_05um = 15, .particles_10um = 30,
+      .particles_25um = 22, .particles_50um = 2, .particles_100um = 0,
+      .unused = 0, .checksum = 0
+    };
+#endif
+
+    FirebaseJson rtdbJson;
+    rtdbJson.set("temp", amd.temperature);
+    rtdbJson.set("humidity", amd.humidity);
+    rtdbJson.set("pm10", pmd.pm10_standard);
+    rtdbJson.set("pm25", pmd.pm25_standard);
+    rtdbJson.set("pm100", pmd.pm100_standard);
+    rtdbJson.set("pt03", pmd.particles_03um);
+    rtdbJson.set("pt05", pmd.particles_05um);
+    rtdbJson.set("pt10", pmd.particles_10um);
+    rtdbJson.set("pt25", pmd.particles_25um);
+    rtdbJson.set("pt100", pmd.particles_100um);
+
+#if MESH_IS_ROOT
     fb_esp_firestore_document_write_t update_write;
     update_write.type = fb_esp_firestore_document_write_type_update;
     std::string record_path = "records/" BOARD_ID "/logged/";
@@ -136,22 +193,17 @@ void loop() {
       Serial.println(fbdo.errorReason());
     }
 
-    FirebaseJson rtdbJson;
-    rtdbJson.set("temp", amd.temperature);
-    rtdbJson.set("humidity", amd.humidity);
-    rtdbJson.set("pm10", pmd.pm10_standard);
-    rtdbJson.set("pm25", pmd.pm25_standard);
-    rtdbJson.set("pm100", pmd.pm100_standard);
-    rtdbJson.set("pt03", pmd.particles_03um);
-    rtdbJson.set("pt05", pmd.particles_05um);
-    rtdbJson.set("pt10", pmd.particles_10um);
-    rtdbJson.set("pt25", pmd.particles_25um);
-    rtdbJson.set("pt100", pmd.particles_100um);
     rtdbJson.set("epoch_time", ntp_client.getEpochTime());
 
     if(!Firebase.RTDB.setJSON(&fbdo, "/current/" BOARD_ID, &rtdbJson)) {
       Serial.println("Error:");
       Serial.println(fbdo.errorReason());
     }
+#else
+    // Send to root node
+    rtdbJson.set("board_id", BOARD_ID);
+    Serial.println("[GUARDIAN] Pushing msg...");
+    mesh.sendSingle(root_node_id, String(rtdbJson.raw()));
+#endif
   }
 }
