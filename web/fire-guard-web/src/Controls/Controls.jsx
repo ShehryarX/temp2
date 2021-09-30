@@ -27,29 +27,6 @@ const mapHeight = "500px";
 
 
 //controls styles
-const geolocateStyle = {
-  top: 0,
-  left: 0,
-  padding: '10px'
-};
-
-const fullscreenControlStyle = {
-  top: 36,
-  left: 0,
-  padding: '10px'
-};
-
-const navStyle = {
-  top: 72,
-  left: 0,
-  padding: '10px'
-};
-
-const scaleControlStyle = {
-  bottom: 36,
-  left: 0,
-  padding: '10px'
-};
 
 
 
@@ -80,8 +57,8 @@ export default function Controls(props) {
       
             <MapGL
               {...viewport}
-              width={mapWidth}
-              height={mapHeight}
+              height="100vh"
+              width="auto"
               mapStyle="mapbox://styles/mapbox/dark-v9"
               onViewportChange={setViewport}
               mapboxApiAccessToken={TOKEN}
@@ -101,10 +78,6 @@ export default function Controls(props) {
                 </Popup>
               )}
 
-              <GeolocateControl style={geolocateStyle} />
-              <FullscreenControl style={fullscreenControlStyle} />
-              <NavigationControl style={navStyle} />
-              <ScaleControl style={scaleControlStyle} />
               {buttons}
               
             </MapGL>
