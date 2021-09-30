@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Layout, Row, Col, Button } from 'antd';
 import Clusters from './Clusters/Clusters';
 import Controls from './Controls/Controls'; 
@@ -36,25 +36,16 @@ const mapViewImageStyle = {
   height: "100%"
 }
 
+export function App() {
+  const [dashboardVisible, setDashboardVisible] = useState(true);
+  const [mapType, setMapType] = useState(0);
 
+  const mapButtons = <> <Row style={mapViewRowStyle}>
+  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => setMapType(0)}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
+  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => setMapType(1)}> <img src={clusterImage} style ={mapViewImageStyle}></img> </Button></Col>
+  <Col span={2}><Button style={mapViewButtonStyle} onClick={() => setMapType(2)}> <img src={heatmapImage} style ={mapViewImageStyle}></img> </Button></Col>
+  </Row> </>;
 
-export class App extends React.Component {
-  state = { 
-    viewport: { 
-      latitude: 37.7577,
-      longitude: -122.4376,
-      zoom: 8
-    },
-    mapType: 0, 
-
-  };
-
-  render() {
-    const mapButtons = <> <Row style={mapViewRowStyle}>
-        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={clusterImage} style ={mapViewImageStyle}></img> </Button></Col>
-        <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={heatmapImage} style ={mapViewImageStyle}></img> </Button></Col>
-      </Row> </>;
     // define the deliverables 
     return (
       <div>
@@ -65,35 +56,15 @@ export class App extends React.Component {
             </div>
           </Header>
           <Content> 
-            {/* <div className="tyler"> 
-              <Map style={ {width: '100%', height: '100%', position: 'relative' }}/>
-            </div>  */}
-            {/* <div className="hussain" width="1000px" height="1000px" position="absolute" top="100px"> 
-              <MapGL
-                  {...viewport}
-                  width="500px"
-                  height="500px"
-                  onViewportChange={(viewport) => this.setState({viewport})}
-                  mapboxApiAccessToken={MAPBOX_TOKEN}
-                  visible={true}
-              />
-            </div> */}
-            {/* <Map2 width="500px" height="500px"/> */}
             <div className="mapWrapper">
-              {this.state.mapType === 0 && <Controls buttons={mapButtons}/>}
-              {this.state.mapType === 1 && <Clusters buttons={mapButtons}/>}
-              {this.state.mapType === 2 && <Heatmap buttons={mapButtons}/>}
+              {mapType == 0 && <Controls buttons={mapButtons}/>}
+              {mapType === 1 && <Clusters buttons={mapButtons} setVisible={setDashboardVisible}/>}
+              {mapType === 2 && <Heatmap buttons={mapButtons}/>}
 
-              {/* <Row style={mapViewRowStyle}>
-                <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 0})}>  <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-                <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 1})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-                <Col span={2}><Button style={mapViewButtonStyle} onClick={() => this.setState({mapType: 2})}> <img src={controlImage} style ={mapViewImageStyle}></img> </Button></Col>
-              </Row> */}
             </div>
-            <DashboardModal />
+            <DashboardModal visible={dashboardVisible} setVisible={setDashboardVisible}/>
           </Content>
         </Layout>
       </div>
     )
-  }
-}
+};

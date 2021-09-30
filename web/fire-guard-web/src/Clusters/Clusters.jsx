@@ -3,7 +3,7 @@ import * as React from 'react';
 import {useState, useRef, useEffect, useCallback} from 'react';
 import {render} from 'react-dom';
 import MapGL, {Source, Layer} from 'react-map-gl';
-import { Modal, List } from 'antd';
+import { Modal, List, Button } from 'antd';
 
 import {clusterLayer, clusterCountLayer, unclusteredPointLayer} from './layers';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -26,7 +26,7 @@ export default function Clusters(props) {
   const showModal = () => {
     setIsModalVisible(true);
   };
-  const buttons = props.buttons;
+  const { buttons, setVisible } = props;
   const handleOk = () => {
     setIsModalVisible(false);
     setLeaves([]);
@@ -80,7 +80,7 @@ export default function Clusters(props) {
   });
 
   const onClick = (e) => { 
-    if(e.features) { 
+    if(e.features && e.features[0]) { 
       const feature = e.features[0];
       var clusterId = feature.properties.cluster_id,
       point_count = feature.properties.point_count,
@@ -100,10 +100,23 @@ export default function Clusters(props) {
         setIsModalVisible(true);
       } else { 
         // TODO: set to shehryar's model for single dashboard
-        setIsModalVisible(true);
+        // useCallback(e => { setVisible(true) } , [setVisible]);
+        // React.useImperativeHandle
+        // handleOnClick();
+        // setVisible(true);
+        setDashboardVisible();
       }
     }
   }
+
+  const setDashboardVisible = () => {
+    setIsModalVisible(false);
+    setVisible(true);
+
+  }
+
+  // const handleOnClick = useCallback(e => 
+  //   {setVisible(true)}, [setVisible]);
 
   return (
     <>
@@ -137,7 +150,9 @@ export default function Clusters(props) {
         <List
           dataSource={leaves}
           renderItem={item => (
-            <List.Item>{item.properties.id}</List.Item>
+            <List.Item style={{padding: "20px 0px"}}>
+              {item.properties.id}<Button style={{float: "right", margin: "auto", padding: "auto"}} onClick={setDashboardVisible}> View Dashboard </Button>
+            </List.Item>
           )}
         />
       </Modal>

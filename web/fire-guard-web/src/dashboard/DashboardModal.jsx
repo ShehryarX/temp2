@@ -33,9 +33,11 @@ const TemperatureData = {
     ],
 };
   
-export const DashboardModal = () => {
-  const [visible, setVisible] = useState(false);
+export const DashboardModal = (props) => {
+  // const [visible, setVisible] = useState(false);
   const [temperatureData, setTemperatureData] = useState(TemperatureData);
+  const { visible, setVisible, beaconName } = props;
+
   return (
     <>
       <Button type="primary" onClick={() => setVisible(true)}>
