@@ -4,14 +4,18 @@
 #include "pms5003.h"
 #include "am2120.h"
 
-#include <SPI.h>
-#include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
 
 #include <Firebase_ESP_Client.h>
 
+#include <painlessMesh.h>
+
 #include <string>
+
+void received_cb(const uint32_t &from, const String &msg) {
+  Serial.printf("[MESH] Recv from node %d:\n%s\n", from, msg.c_str());
+}
 
 PMS5003 pms;
 AM2120 ams;
@@ -41,46 +45,66 @@ Firebase_ESP_Client fb;
 WiFiUDP ntp_udp;
 NTPClient ntp_client(ntp_udp, "pool.ntp.org", 0);
 
+WiFiClient wifiClient;
+painlessMesh mesh;
+IPAddress myIp = IPAddress(0, 0, 0, 0);
+
+IPAddress getLocalIp() {
+  return IPAddress(mesh.getStationIP());
+}
+
 void setup() {
   Serial.begin(115200);
   Serial.printf("[GUARDIAN] Booting up board %s\n", BOARD_ID);
 
   Serial.print("[GUARDIAN] Connecting to wifi...");
 
-  WiFi.begin(WIFI_SSID, WIFI_PSK);
-  while(WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(300);
-  }
+  // WiFi.begin(WIFI_SSID, WIFI_PSK);
+  // while(WiFi.status() != WL_CONNECTED) {
+  //   Serial.print(".");
+  //   delay(300);
+  // }
 
-  ntp_client.begin();
-  while(!ntp_client.forceUpdate()) {
-    delay(300);
-  }
-
-  Serial.println();
-  Serial.println("[GUARDIAN] Connected with IP: ");
-  Serial.println(WiFi.localIP());
-
-  Serial.println("[GUARDIAN] Staring Firebase...");
-  Firebase.begin(&fb_cfg, &fb_auth);
-  Firebase.reconnectWiFi(true);
-  Firebase.RTDB.setMaxRetry(&fbdo, 3);
-  Firebase.RTDB.setMaxErrorQueue(&fbdo, 30);
-  Serial.println("[GUARDIAN] Started Firebase!");
-
+  mesh.init(MESH_PREFIX, MESH_PSK, MESH_PORT, WIFI_AP_STA, 11);
+  mesh.onReceive(received_cb);
+  mesh.stationManual(WIFI_SSID, WIFI_PSK);
+  mesh.setHostname(BOARD_ID);
+  mesh.setRoot(true);
+  mesh.setContainsRoot(true);
+  
   pms.begin(PIN_PMS_TX);
   ams.begin(PIN_AM2120);
 }
 
-void loop() {
-  ntp_client.update();
+volatile bool hasSta = false;
 
-  if(pms.loop() && ams.has_frame()) {
+void loop() {
+  mesh.update();
+  if(hasSta) ntp_client.update();
+
+  if(myIp != getLocalIp()) {
+    myIp = getLocalIp();
+    // One time setup on IP change
+    ntp_client.begin();
+
+    Serial.println();
+    Serial.println("[GUARDIAN] Connected with IP: ");
+    Serial.println(myIp);
+
+    Serial.println("[GUARDIAN] Staring Firebase...");
+    Firebase.begin(&fb_cfg, &fb_auth);
+    // Firebase.reconnectWiFi(true);
+    Firebase.RTDB.setMaxRetry(&fbdo, 3);
+    Firebase.RTDB.setMaxErrorQueue(&fbdo, 30);
+    Serial.println("[GUARDIAN] Started Firebase!");
+    hasSta = true;
+  }
+
+  if(pms.loop() && ams.has_frame() && hasSta) {
     am2120_data amd;
     if(!ams.get_frame(amd)) return;
     pms5003data pmd = pms.get_frame();
-    if(!Firebase.ready()) return;
+    // if(!Firebase.ready()) return;
 
     fb_esp_firestore_document_write_t update_write;
     update_write.type = fb_esp_firestore_document_write_type_update;

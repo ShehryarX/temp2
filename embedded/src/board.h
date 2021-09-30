@@ -17,4 +17,9 @@
 #define FB_PASSWORD "Testing1234!"
 #define FB_DBURL "https://fire-babies-default-rtdb.firebaseio.com/"
 
+// Mesh network
+#define MESH_PREFIX "GRD_MESH"
+#define MESH_PSK "grd@meshnet"
+#define MESH_PORT 6969
+
 #endif
