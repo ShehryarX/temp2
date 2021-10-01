@@ -25,11 +25,19 @@ const TOKEN = 'pk.eyJ1IjoidHBpbnRvNyIsImEiOiJja2JicWYwMzkwM3NnMnNtZnZkbXU5dGhkIn
 const mapWidth = "1000px";
 const mapHeight = "500px";
 
-
 //controls styles
 
 
-
+CITIES.map((city) => { 
+  const i = Math.random() * 3; 
+  if(i < 1){ 
+    city["color"] = "#00FF00";
+  } else if(i < 2) { 
+    city["color"] = "#FF3034";
+  } else { 
+    city["color"] = "#ebae2c";
+  }
+});
 export default function Controls(props) {
   const [viewport, setViewport] = useState({
     latitude: 40,
@@ -39,17 +47,17 @@ export default function Controls(props) {
     pitch: 0
   });
   const [popupInfo, setPopupInfo] = useState(null);
-  CITIES.map((city) => { 
-    const i = Math.random() * 3; 
-    if(i < 1){ 
-      city["color"] = "#00FF00";
-    } else if(i < 2) { 
-      city["color"] = "#FF3034";
-    } else { 
-      city["color"] = "#ebae2c";
+
+  const  { buttons, setVisible, setBeaconName } = props;
+
+  const onClick = (e) => { 
+    if (e) { 
+      setVisible(true);
+      setBeaconName("us2000amhu");
     }
-  });
-  const buttons = props.buttons; 
+  }
+
+
   return (
     <div>
       <Layout>
@@ -64,7 +72,7 @@ export default function Controls(props) {
               mapboxApiAccessToken={TOKEN}
             >
               {/* TODO: Colour for pins + pin IDs */}
-              <Pins data={CITIES} onClick={setPopupInfo} />
+              <Pins data={CITIES} onClick={onClick} />
               {popupInfo && (
                 <Popup
                   tipSize={5}
