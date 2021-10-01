@@ -50,7 +50,7 @@ const mapStyle = {
 }
 
 export function App() {
-  const [dashboardVisible, setDashboardVisible] = useState(true);
+  const [dashboardVisible, setDashboardVisible] = useState(false);
   const [beaconName, setBeaconName] = useState("");
   const [mapType, setMapType] = useState(0);
 
@@ -72,7 +72,7 @@ export function App() {
           </Header>
           <Content style={contentStyle}> 
             <div className="mapWrapper">
-              {mapType == 0 && <Controls buttons={mapButtons} style={mapStyle} />}
+              {mapType == 0 && <Controls buttons={mapButtons} style={mapStyle} setBeaconName={setBeaconName}  setVisible={setDashboardVisible} />}
               {mapType === 1 && <Clusters buttons={mapButtons} style={mapStyle} setBeaconName={setBeaconName}  setVisible={setDashboardVisible}/>}
               {mapType === 2 && <Heatmap buttons={mapButtons} style={mapStyle} />}
 

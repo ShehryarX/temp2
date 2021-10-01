@@ -3,6 +3,7 @@ import { Button, Card, Modal } from 'antd';
 import { Line } from "react-chartjs-2";
 import { ref, get, child, onValue } from 'firebase/database'
 import { db } from "../temp.js";
+import moment  from "moment";
 
 // get(db, `current/GRD_0001/`).then((snapshot) => {
 //   if (snapshot.exists()) {
@@ -50,11 +51,21 @@ export const DashboardModal = (props) => {
   let epochData = [];
   useMemo(() => {
     setInterval(() => {
+      let tempBackgroundColor = "rgba(75,192,192,0.2)";
+      let tempBorderColor = "rgba(75,192,192,1)";
       get(child(aa, 'current/GRD_0001/')).then((snapshot) => {
         if (snapshot.exists()) {
-          temp.push(snapshot.val()['temp']);
-          humidity.push(snapshot.val()['humidity']);
-          epochData.push(snapshot.val()['epoch_time']);
+          const newTemp = snapshot.val()['temp'] / 10;
+          temp.push(newTemp);
+        
+
+          const newHumidity = snapshot.val()['humidity'] / 10;
+          humidity.push(newHumidity);
+          const date = moment.unix(snapshot.val()['epoch_time']);
+
+          // console.log(date.format("mm:ss"));
+          epochData.push(moment(date).format("hh:mm:ss"));
+
           if (temp.length >= 10) {
             temp.shift();
             epochData.shift();
@@ -71,8 +82,8 @@ export const DashboardModal = (props) => {
             {
                 data: temp,
                 fill: true,
-                backgroundColor: "rgba(75,192,192,0.2)",
-                borderColor: "rgba(75,192,192,1)"
+                backgroundColor: tempBackgroundColor,
+                borderColor: tempBorderColor,
             },
         ],
       })
@@ -86,7 +97,7 @@ export const DashboardModal = (props) => {
             {
                 data: humidity,
                 fill: true,
-                backgroundColor: "rgba(75,192,192,0.2)",
+                backgroundColor: tempBackgroundColor,
                 borderColor: "rgba(75,192,192,1)"
             },
         ],
