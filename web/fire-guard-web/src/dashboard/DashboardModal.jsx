@@ -147,17 +147,17 @@ export const DashboardModal = (props) => {
         height="66%"
       >
         <Row style={mapViewRowStyle}>
-          <Col span={8} style={{width: "33%", position:"static", padding:"2px", minWidth:"400px"}}>
+          <Col span={8} style={{width: "30%", position:"static", padding:"2px"}}>
             <Card title="Temperature" style={{ width: '100%' }}>
                 <Line data={temperatureData} options={{plugins: { legend: {display: false,},}}} />
             </Card>
           </Col>
-          <Col span={8} style={{width: "33%", position:"static", padding:"2px", minWidth:"400px"}}>
+          <Col span={8} style={{width: "30%", position:"static", padding:"2px"}}>
             <Card title="Humidity" style={{ width: '100%' }}>
                 <Line data={humidityData} options={{plugins: { legend: {display: false,},}}} />
             </Card>
           </Col>
-          <Col span={8} style={{width: "33%", position:"static", padding:"2px", minWidth:"400px"}}>
+          <Col span={8} style={{width: "30%", position:"static", padding:"2px" }}>
             <Card title="Particulate Matter" style={{ width: '100%' }}>
                 <Line data={pm25Data} options={{plugins: { legend: {display: false,},}}} />
             </Card>
